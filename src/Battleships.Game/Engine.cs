@@ -36,7 +36,7 @@ namespace Battleships.Game
             }
 
             playerGrid.PrintToConsole();
-            Console.WriteLine($"Game won! Hits: {playerGrid.Hits}/100.");
+            Console.WriteLine($"Game won! Hits: {playerGrid.Score}.");
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public Grid(int size) : this(size, size) { }
 
-        public Grid(int width, int length)
+        private Grid(int width, int length)
         {
             Width = width;
             Length = length;

@@ -2,25 +2,27 @@
 {
     public sealed class PlayerGrid : Dictionary<char, char[]>
     {
-        private readonly int _width;
+        private readonly Grid _grid;
         private readonly int _paddingWidth;
 
         public PlayerGrid(int paddingWidth, Grid grid)
         {
-            _width = grid.Width;
+            _grid = grid;
             _paddingWidth = paddingWidth;
             foreach (var key in Enumerable.Range(default, grid.Length))
             {
-                this[GetRowIdentifier(key)] = Enumerable.Repeat(Chars.Empty, _width).ToArray();
+                this[GetRowIdentifier(key)] = Enumerable.Repeat(Chars.Empty, _grid.Width).ToArray();
             }
         }
 
-        public int Hits { get; private set; }
+        public string Score => $"{Hits}/{_grid.Length * _grid.Width}";
+
+        private int Hits { get; set; }
 
         public void PrintToConsole()
         {
             Console.Clear();
-            var columnIdentifiers = Enumerable.Range(default, _width).Select(GetColumnIdentifier);
+            var columnIdentifiers = Enumerable.Range(default, _grid.Width).Select(GetColumnIdentifier);
             var columnHeaderPadding = Chars.Space.ToString();
             Console.WriteLine(columnHeaderPadding + string.Join(Chars.Space, columnIdentifiers));
             foreach (var row in this)
