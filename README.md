@@ -2,7 +2,8 @@
 Battleships game as an executable.
 
 ## How to run:
-Prerequisite: .NET 6.0, .NET CLI (https://docs.microsoft.com/en-us/dotnet/core/tools/)
+Prerequisite: .NET 6.0, .NET CLI (https://docs.microsoft.com/en-us/dotnet/core/tools/).
+
 Navigate to root directory in this repository. Run command `dotnet run --project ./src/Battleships.Game/Battleships.Game.csproj --configuration Release`.
 
 ## Game rules:
