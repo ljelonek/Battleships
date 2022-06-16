@@ -6,52 +6,16 @@ namespace Battleships.Game
     {
         static void Main(string[] args)
         {
-            var configuration = GetConfiguration(args);
-            var computerGrid = new ComputerGrid(configuration.GridSize);
-            var ships = new[] { new Ship(5), new Ship(4), new Ship(4) };
-            computerGrid.PlaceShips(ships);
-            var playerGrid = new PlayerGrid(computerGrid, configuration.PaddingWidth);
-            var userOutput = Language.WaitingForInput;
-            while (true)
+            var configuration = Configuration.Build(args);
+            var grid = new Grid(configuration.GridSize);
+            var shipOrders = new[]
             {
-                playerGrid.PrintToConsole();
-                Console.WriteLine(userOutput);
-                var input = Console.ReadLine();
-                if (!Point.TryParse(input, configuration.GridSize, out var point))
-                {
-                    userOutput = Language.InvalidInput;
-                    continue;
-                }
-
-                var hitOutcome = playerGrid.GetHitOutcome(point);
-                userOutput = hitOutcome switch
-                {
-                    Chars.Miss => Language.Miss,
-                    Chars.Hit => Language.Hit,
-                    Chars.Duplicate => Language.Duplicate,
-                    _ => Language.InvalidOutcome
-                };
-                if (hitOutcome == Chars.End)
-                {
-                    playerGrid.PrintToConsole();
-                    Console.WriteLine($"Game won! Hits: {playerGrid.Hits}/100.");
-                    break;
-                }
-            }
-        }
-
-        private static Configuration GetConfiguration(string[] args)
-        {
-            if (args.Length == 2)
-            {
-                return uint.TryParse(args[0], out var gridSize)
-                    ? uint.TryParse(args[1], out var paddingWidth)
-                        ? new Configuration(gridSize, paddingWidth)
-                        : throw new ArgumentException($"{nameof(args)}[1]")
-                    : throw new ArgumentException($"{nameof(args)}[0]");
-            }
-
-            return Configuration.Default;
+                new ShipOrder(length: 5, count: 1),
+                new ShipOrder(length: 4, count: 2)
+            };
+            var enemyFleet = new EnemyFleet(shipOrders, grid);
+            var playerGrid = new PlayerGrid(configuration.PaddingWidth, grid);
+            Engine.Start(playerGrid, enemyFleet, grid);
         }
     }
 }

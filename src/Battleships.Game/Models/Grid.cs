@@ -1,24 +1,17 @@
 ﻿namespace Battleships.Game.Models
 {
-    public abstract class Grid : Dictionary<char, char[]>
+    public class Grid
     {
-        protected readonly int _width;
+        public Grid(int size) : this(size, size) { }
 
-        protected Grid(int size) : this(size, size) { }
-
-        private Grid(int width, int length)
+        public Grid(int width, int length)
         {
-            _width = width;
-            foreach (var key in Enumerable.Range(default, length))
-            {
-                this[GetRowIdentifier(key)] = Enumerable.Repeat(Chars.Empty, _width).ToArray();
-            }
+            Width = width;
+            Length = length;
         }
 
-        public int Hits { get; protected set; }
+        public int Width { get; }
 
-        public virtual char GetHitOutcome(Point point) => this[point.RowIdentifier][point.ColumnIndex];
-
-        private static char GetRowIdentifier(int index) => (char)(Chars.A + index);
+        public int Length { get; }
     }
 }

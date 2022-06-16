@@ -2,8 +2,13 @@
 {
     public class Ship
     {
-        public Ship(int length) => Length = length;
+        public Ship(IEnumerable<Point> coordinates)
+        {
+            State = coordinates.ToDictionary(x => x, _ => Chars.Active);
+        }
 
-        public int Length { get; }
+        public Dictionary<Point, char> State { get; }
+
+        public int Health => State.Values.Count(x => x == Chars.Active);
     }
 }

@@ -1,15 +1,21 @@
 ﻿namespace Battleships.Game.Models
 {
-    public sealed class PlayerGrid : Grid
+    public sealed class PlayerGrid : Dictionary<char, char[]>
     {
-        private readonly ComputerGrid _computerGrid;
+        private readonly int _width;
         private readonly int _paddingWidth;
 
-        public PlayerGrid(ComputerGrid computerGrid, int paddingWidth) : base(computerGrid.Count)
+        public PlayerGrid(int paddingWidth, Grid grid)
         {
-            _computerGrid = computerGrid;
+            _width = grid.Width;
             _paddingWidth = paddingWidth;
+            foreach (var key in Enumerable.Range(default, grid.Length))
+            {
+                this[GetRowIdentifier(key)] = Enumerable.Repeat(Chars.Empty, _width).ToArray();
+            }
         }
+
+        public int Hits { get; private set; }
 
         public void PrintToConsole()
         {
@@ -24,31 +30,18 @@
             }
         }
 
-        public override char GetHitOutcome(Point point)
-        {
-            if (IsNotEmpty(point))
-            {
-                return Chars.Duplicate;
-            }
+        public bool IsAlreadyHit(Point point) => this[point.RowIdentifier][point.ColumnIndex] != Chars.Empty;
 
+        public void RegisterStrikeResult(StrikeResult strikeResult)
+        {
             Hits++;
-            return _computerGrid.GetHitOutcome(point) switch
+            foreach (var point in strikeResult.AffectedCoordinates)
             {
-                Chars.Empty => this[point.RowIdentifier][point.ColumnIndex] = Chars.Miss,
-                Chars.Hit => HandleHit(point),
-                _ => Chars.Duplicate
-            };
+                this[point.RowIdentifier][point.ColumnIndex] = strikeResult.Result;
+            }
         }
 
-        private char HandleHit(Point point)
-        {
-            _computerGrid.RegisterHit();
-            this[point.RowIdentifier][point.ColumnIndex] = Chars.Hit;
-
-            return _computerGrid.Hits == 0 ? Chars.End : Chars.Hit;
-        }
-
-        private bool IsNotEmpty(Point point) => base.GetHitOutcome(point) != Chars.Empty;
+        private static char GetRowIdentifier(int index) => (char)(Chars.A + index);
 
         private string GetColumnIdentifier(int index) => FormatInput(index + 1);
 

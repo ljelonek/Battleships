@@ -12,11 +12,17 @@
 
         public int ColumnIndex { get; }
 
-        public static bool TryParse(string? input, int size, out Point point)
+        public Point[] CreateHorizontalRange(int length, int size) =>
+            GetRange(ColumnIndex, length, default, size).Select(x => new Point(RowIdentifier, x)).ToArray();
+
+        public Point[] CreateVerticalRange(int length, int size) =>
+            GetRange(RowIdentifier, length, Chars.A, size).Select(x => new Point((char)x, ColumnIndex)).ToArray();
+
+        public static bool TryParse(string? input, Grid grid, out Point point)
         {
             point = new Point(default, default);
-            var maxRowIdentifier = Chars.A + size;
-            var maxColumnIndex = default(int) + size;
+            var maxRowIdentifier = Chars.A + grid.Length;
+            var maxColumnIndex = default(int) + grid.Width;
             var maxInput = $"{maxRowIdentifier}{maxColumnIndex}";
             if (string.IsNullOrWhiteSpace(input) || input.Length > maxInput.Length)
             {
@@ -35,12 +41,6 @@
 
             return false;
         }
-
-        public Point[] CreateHorizontalRange(int length, int size) =>
-            GetRange(ColumnIndex, length, default, size).Select(x => new Point(RowIdentifier, x)).ToArray();
-
-        public Point[] CreateVerticalRange(int length, int size) =>
-            GetRange(RowIdentifier, length, Chars.A, size).Select(x => new Point((char)x, ColumnIndex)).ToArray();
 
         private static bool IsInRange(int value, int minimum, int maximum) => value < maximum && value >= minimum;
 
