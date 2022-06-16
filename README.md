@@ -1,11 +1,9 @@
 # Battleships
 Battleships game as an executable.
 
-## How to build:
-Navigate to root directory in this repository. Run command `dotnet test`.
-
 ## How to run:
-Navigate to root directory in this repository. Run command `dotnet run --project ./src/Battleships.Game/Battleships.Game.csproj`.
+Prerequisite: .NET 6.0, .NET CLI (https://docs.microsoft.com/en-us/dotnet/core/tools/)
+Navigate to root directory in this repository. Run command `dotnet run --project ./src/Battleships.Game/Battleships.Game.csproj --configuration Release`.
 
 ## Game rules:
 - Program creates 10x10 grid and places several ships at random places with predefined sizes.

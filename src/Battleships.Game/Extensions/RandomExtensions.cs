@@ -12,6 +12,6 @@ namespace Battleships.Game.Extensions
             return new Point((char)randomRowIdentifier, randomColumnIndex);
         }
 
-        public static bool NextBool(this Random random) => random.Next(default, 2) > 0;
+        public static bool NextBoolean(this Random random) => random.Next(default, 2) > 0;
     }
 }

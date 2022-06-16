@@ -49,7 +49,7 @@ namespace Battleships.Game.Models
                 var shipPlaced = false;
                 while (!shipPlaced)
                 {
-                    var orientation = _random.NextBool();
+                    var orientation = _random.NextBoolean();
                     var startingPoint = _random.NextPoint(_grid.Length, _grid.Width);
                     shipPlaced = TryPlaceShip(orientation, startingPoint, shipLength);
                 }

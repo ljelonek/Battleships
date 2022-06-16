@@ -7,7 +7,7 @@ namespace Battleships.Game
         public static void Start(PlayerGrid playerGrid, EnemyFleet enemyFleet, Grid grid)
         {
             var userOutput = Language.WaitingForInput;
-            while (true)
+            while (enemyFleet.HasShips)
             {
                 playerGrid.PrintToConsole();
                 Console.WriteLine(userOutput);
@@ -33,13 +33,10 @@ namespace Battleships.Game
                     Chars.Sunk => Language.Sunk,
                     _ => Language.InvalidOutcome
                 };
-                if (!enemyFleet.HasShips)
-                {
-                    playerGrid.PrintToConsole();
-                    Console.WriteLine($"Game won! Hits: {playerGrid.Hits}/100.");
-                    break;
-                }
             }
+
+            playerGrid.PrintToConsole();
+            Console.WriteLine($"Game won! Hits: {playerGrid.Hits}/100.");
         }
     }
 }

@@ -7,7 +7,7 @@
 
         private Configuration() { }
 
-        public Configuration(uint gridSize, uint paddingWidth)
+        private Configuration(uint gridSize, uint paddingWidth)
         {
             GridSize = gridSize <= MaximumSize
                 ? (int)gridSize : throw new ArgumentOutOfRangeException(nameof(gridSize));

@@ -21,7 +21,7 @@
         public static bool TryParse(string? input, Grid grid, out Point point)
         {
             point = new Point(default, default);
-            var maxRowIdentifier = Chars.A + grid.Length;
+            var maxRowIdentifier = (char)(Chars.A + grid.Length);
             var maxColumnIndex = default(int) + grid.Width;
             var maxInput = $"{maxRowIdentifier}{maxColumnIndex}";
             if (string.IsNullOrWhiteSpace(input) || input.Length > maxInput.Length)
@@ -29,8 +29,9 @@
                 return false;
             }
 
-            var inputRowIdentifier = input[0];
-            var inputColumnIndex = int.TryParse(input[1..], out var result) ? result - 1 : default;
+            var upperInput = input.ToUpper();
+            var inputRowIdentifier = upperInput[0];
+            var inputColumnIndex = int.TryParse(upperInput[1..], out var result) ? result - 1 : default;
             if (IsInRange(inputRowIdentifier, Chars.A, maxRowIdentifier)
                 && IsInRange(inputColumnIndex, default, maxColumnIndex))
             {
